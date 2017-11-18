@@ -1,7 +1,7 @@
 Sci-Hub-Fy
 ==========
 
-Chrome extension that appends ".sci-hub.cc" to active tab domain, allowing free access to scientific articles.
+Chrome extension that appends ".sci-hub.cc" to active tab domain, allowing free access to scientific articles. -- Now ported to Firefox. See [Releases] if you want to use signed .xpi files for installation. (Use at your own risk!)
 
 The hard work is done by [Sci-Hub].
 
@@ -26,3 +26,4 @@ Another way of using this extension is through the context menu (right-click):
 - Page context: if you right-click anywhere but a link in a page, we append ".sci-hub.cc" to the page's URL and redirect you to it (the same as clicking in the extension icon).
 
 [Sci-Hub]:http://sci-hub.cc
+[Releases]:https://github.com/zhuth/sci-hub-fy/releases

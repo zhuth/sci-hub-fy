@@ -13,7 +13,7 @@
   ],
 
   "icons": {
-    "19": "img/icon.png",
+    "16": "img/icon.png",
     "128": "img/icon_store.png"
   },
 
@@ -22,13 +22,11 @@
   },
 
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "scripts": ["background.js"]
   },
 
   "options_ui": {
     "page": "options.html",
-    "chrome_style": false,
     "open_in_tab": true
   }
 }

@@ -8,14 +8,14 @@ function sciHubFy(link, sciHubDomain) {
 
 function newTabSciHubFy(tab, link) {
   // Tab is the current tab and link is the link to append sci-hub.io
-  chrome.storage.sync.get({
+  browser.storage.local.get({
     domain: 'sci-hub.cc'  // Default domain
-  }, function(items) {
-    chrome.tabs.query({
+  }).then(function(items) {
+    browser.tabs.query({
         active: true
       }, tabs => {
         let index = tabs[0].index;
-        chrome.tabs.create({index: index + 1, url: sciHubFy(link, items.domain)});
+        browser.tabs.create({index: index + 1, url: sciHubFy(link, items.domain)});
       }
     );
   });
@@ -23,42 +23,48 @@ function newTabSciHubFy(tab, link) {
 
 function sameTabSciHubFy(tab, link) {
   // Tab is the current tab and link is the link to append sci-hub.io
-  chrome.storage.sync.get({
+  browser.storage.local.get({
     domain: 'sci-hub.cc' // Default domain
-  }, function(items) {
-    chrome.tabs.update(tab.id, {url: sciHubFy(link, items.domain)});
+  }).then(function(items) {
+    browser.tabs.update(tab.id, {url: sciHubFy(link, items.domain)});
   });
 }
 
 function openOptions(){
-  if (chrome.runtime.openOptionsPage) {
-  // New way to open options pages, if supported (Chrome 42+).
-  chrome.runtime.openOptionsPage();
+  if (browser.runtime.openOptionsPage) {
+  // New way to open options pages, if supported (browser 42+).
+  browser.runtime.openOptionsPage();
   } else {
     // Reasonable fallback.
-    window.open(chrome.runtime.getURL('options.html'));
+    window.open(browser.runtime.getURL('options.html'));
   }
 }
 // Setup extension click action
-chrome.browserAction.onClicked.addListener(function(tab) {
-  sameTabSciHubFy(tab, tab.url);
+browser.browserAction.onClicked.addListener(function(state) {
+  browser.tabs.query({
+        active: true
+      }, tabs => {
+        let index = tabs[0].index, tab = tabs[0];
+        sameTabSciHubFy(tab, tab.url);
+      }
+    );
 });
 
 // Setup context menu actions
-chrome.runtime.onInstalled.addListener(function() {
-    chrome.contextMenus.create({
+browser.runtime.onInstalled.addListener(function() {
+    browser.contextMenus.create({
         title: 'Sci-Hub-Fy',
         id: 'page', // you'll use this in the handler function to identify this context menu item
         contexts: ['page'],
     });
-    chrome.contextMenus.create({
+    browser.contextMenus.create({
         title: 'Sci-Hub-Fy',
         id: 'link', // you'll use this in the handler function to identify this context menu item
         contexts: ['link'],
     });
 });
 
-chrome.contextMenus.onClicked.addListener(function(info, tab) {
+browser.contextMenus.onClicked.addListener(function(info, tab) {
     if (info.menuItemId === "page") { // here's where you'll need the ID
       sameTabSciHubFy(tab, tab.url);
     } else if (info.menuItemId === "link") {
